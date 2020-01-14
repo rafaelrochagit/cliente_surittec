@@ -3,7 +3,9 @@ package com.cliente.surittec.domain;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
+import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -26,7 +28,7 @@ public class Cliente implements Serializable{
 	private String nome;
 	private String cpf;
 	
-	@OneToOne
+	@OneToOne(cascade = {CascadeType.ALL})
 	@JoinColumn(name = "endereco_id")
 	private Endereco endereco;
 	
@@ -75,7 +77,7 @@ public class Cliente implements Serializable{
 	}
 
 	public void setCpf(String cpf) {
-		this.cpf = cpf;
+		this.cpf = cpf.replaceAll("[.-]", "");
 	}
 
 	public Endereco getEndereco() {
@@ -91,6 +93,7 @@ public class Cliente implements Serializable{
 	}
 
 	public void setTelefones(Set<String> telefones) {
+		telefones.stream().map(telefone -> telefone.replace("/[^0-9]+/g","")).collect(Collectors.toSet());
 		this.telefones = telefones;
 	}
 
