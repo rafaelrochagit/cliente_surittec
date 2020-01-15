@@ -22,7 +22,7 @@ public class ClienteInsertValidator implements ConstraintValidator<ClienteInsert
 		
 		 // inclua os testes aqui, inserindo erros na lista
 		 
-		 if (!Helper.isCPF(objDto.getCpf())) {
+		 if (objDto.getCpf() != null && !Helper.isCPF(objDto.getCpf())) {
 			 list.add(new FieldMessage("cpf", "CPF Inválido"));
 		 }
 		
