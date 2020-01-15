@@ -50,7 +50,7 @@ public class Cliente implements Serializable{
 		super();
 		this.id = id;
 		this.nome = nome;
-		this.cpf = cpf;
+		this.setCpf(cpf);
 		this.endereco = endereco;
 		this.telefones = telefones;
 		this.emails = emails;
@@ -77,7 +77,7 @@ public class Cliente implements Serializable{
 	}
 
 	public String getCpf() {
-		return cpf;
+		return cpf != null ? cpf.replaceAll("[.-]", "") : null;
 	}
 
 	public void setCpf(String cpf) {

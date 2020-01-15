@@ -15,7 +15,9 @@ import org.hibernate.validator.constraints.Length;
 import com.cliente.surittec.domain.Cliente;
 import com.cliente.surittec.domain.Telefone;
 import com.cliente.surittec.enums.TipoTelefone;
+import com.cliente.surittec.services.validation.ClienteInsert;
 
+@ClienteInsert
 public class ClienteNewDTO implements Serializable{
 
 	private static final long serialVersionUID = 1L;
@@ -28,6 +30,7 @@ public class ClienteNewDTO implements Serializable{
 	private String nome;
 
 	@NotEmpty(message="{campo.obrigatorio}")
+	@Pattern(regexp = "\\d{3}\\.\\d{3}\\.\\d{3}\\-\\d{2}$", message="{campo.invalido.cpf}")
 	private String cpf;
 	
 	@NotEmpty(message="{campo.obrigatorio}")
