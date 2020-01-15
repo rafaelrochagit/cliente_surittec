@@ -23,10 +23,11 @@ public class TelefoneDTO implements Serializable{
 	
 	public TelefoneDTO() {}
 	
-	public TelefoneDTO(Telefone Telefone) {
+	public TelefoneDTO(Telefone telefone) {
 		super();
-		this.id = Telefone.getId();
-		this.numero = Telefone.getNumero();
+		this.id = telefone.getId();
+		this.numero = telefone.getNumero();
+		this.tipo = telefone.getTipo().getCod();
 	}
 
 	public Integer getId() {

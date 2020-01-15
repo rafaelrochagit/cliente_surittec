@@ -39,4 +39,10 @@ public class ResourceExceptionHandler {
 		}
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
 	}
+	
+	@ExceptionHandler(NullPointerException.class)
+	public ResponseEntity<StandardError> objectNotFound(NullPointerException e, HttpServletRequest request) {
+		StandardError error = new StandardError(HttpStatus.INTERNAL_SERVER_ERROR.value(), "NullPointerException", System.currentTimeMillis());
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
+	}
 }

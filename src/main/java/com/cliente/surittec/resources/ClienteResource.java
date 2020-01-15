@@ -47,11 +47,13 @@ public class ClienteResource {
 	}
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.PUT)
-	public ResponseEntity<Void> update(@Valid @RequestBody ClienteDTO clienteDTO, @PathVariable Integer id) {
+	public ResponseEntity<Cliente> update(@Valid @RequestBody ClienteNewDTO clienteDTO, @PathVariable Integer id) {
 		Cliente cliente = clienteService.fromDTO(clienteDTO);
+		cliente.setClienteToTelefones();
 		cliente.setId(id);
 		cliente = clienteService.update(cliente);
-		return ResponseEntity.noContent().build();
+		//return ResponseEntity.noContent().build();
+		return ResponseEntity.ok().body(cliente);
 	}
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.DELETE)

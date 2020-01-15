@@ -18,6 +18,7 @@ import com.cliente.surittec.dto.ClienteNewDTO;
 import com.cliente.surittec.repositories.ClienteRepository;
 import com.cliente.surittec.repositories.EnderecoRepository;
 import com.cliente.surittec.services.exceptions.DataIntegrityException;
+import com.cliente.surittec.services.exceptions.ObjectNotFoundException;
 
 @Service
 public class ClienteService {
@@ -42,6 +43,7 @@ public class ClienteService {
 	
 	public Cliente update(Cliente cliente) {
 		Cliente newCliente = this.find(cliente.getId());
+		if (newCliente == null) throw new ObjectNotFoundException("Não foi possível encontrar cliente de id " + cliente.getId());
 		updateData(newCliente, cliente);
 		return clienteRepository.save(cliente);
 	}
@@ -82,6 +84,11 @@ public class ClienteService {
 	
 	private void updateData(Cliente newCliente, Cliente cliente) {
 		newCliente.setNome(cliente.getNome());
+		newCliente.setCpf(cliente.getCpf());
+		newCliente.setEmails(cliente.getEmails());
+		newCliente.setEndereco(cliente.getEndereco());
+		newCliente.setId(cliente.getId());
+		newCliente.setTelefones(cliente.getTelefones());
 	}
 
 }

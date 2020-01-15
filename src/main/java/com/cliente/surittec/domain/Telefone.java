@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import com.cliente.surittec.enums.TipoTelefone;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Telefone implements Serializable{
@@ -28,6 +29,7 @@ public class Telefone implements Serializable{
 	@Column(nullable = false)
 	private Integer tipo;
 	
+	@JsonIgnore
 	@ManyToOne(cascade = {CascadeType.PERSIST})
 	@JoinColumn(name="cliente_id")
 	private Cliente cliente;

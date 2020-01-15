@@ -137,7 +137,7 @@ public class ClienteNewDTO implements Serializable{
 
 	public List<Telefone> getTelefones() {
 		List<Telefone> telefones = this.telefones.stream().map(
-				telefone -> new Telefone(null,telefone.getNumeroSemMascara(), TipoTelefone.toEnum(telefone.getTipo()))
+				telefone -> new Telefone(telefone.getId(),telefone.getNumeroSemMascara(), TipoTelefone.toEnum(telefone.getTipo()))
 				).collect(Collectors.toList());
 		return telefones;
 	}
