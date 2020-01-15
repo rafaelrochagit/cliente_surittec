@@ -14,7 +14,7 @@ public class ClienteDTO implements Serializable{
 	
 	private Integer id;
 	
-	@NotEmpty(message="Preenchimento obrigatório")
+	@NotEmpty(message="{campo.lista.email.obrigatorio}")
 	@Length(min=3, max=100, message="Tamanho dever ser de 3 a 100")
 	private String nome;
 	

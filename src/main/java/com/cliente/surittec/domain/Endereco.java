@@ -2,6 +2,7 @@ package com.cliente.surittec.domain;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,11 +17,21 @@ public class Endereco implements Serializable{
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 	
+	@Column(nullable = false)
 	private String cep;
+	
+	@Column(nullable = false)
 	private String logradouro;
+	
+	@Column(nullable = false)
 	private String bairro;
+	
+	@Column(nullable = false)
 	private String cidade;
+	
+	@Column(nullable = false)
 	private String uf;
+	
 	private String complemento;
 	
 	public Endereco() {
@@ -52,7 +63,7 @@ public class Endereco implements Serializable{
 	}
 
 	public void setCep(String cep) {
-		this.cep = cep;
+		this.cep = cep.replaceAll("[.-]", "");
 	}
 
 	public String getLogradouro() {

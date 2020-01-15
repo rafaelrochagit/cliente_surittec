@@ -1,14 +1,20 @@
 package com.cliente.surittec.dto;
 
 import java.io.Serializable;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.Length;
 
 import com.cliente.surittec.domain.Cliente;
+import com.cliente.surittec.domain.Telefone;
+import com.cliente.surittec.enums.TipoTelefone;
 
 public class ClienteNewDTO implements Serializable{
 
@@ -16,20 +22,36 @@ public class ClienteNewDTO implements Serializable{
 	
 	private Integer id;
 	
-	@NotEmpty(message="Preenchimento obrigatório")
+	@NotEmpty(message="{campo.obrigatorio}")
 	@Length(min=3, max=100, message="Tamanho dever ser de 3 a 100")
+	@Pattern(regexp = "[\\d|A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]+$", message="{campo.invalido.letras.e.numeros}")
 	private String nome;
+
+	@NotEmpty(message="{campo.obrigatorio}")
 	private String cpf;
 	
+	@NotEmpty(message="{campo.obrigatorio}")
 	private String cep;
+
+	@NotEmpty(message="{campo.obrigatorio}")
 	private String logradouro;
+
+	@NotEmpty(message="{campo.obrigatorio}")
 	private String bairro;
+
+	@NotEmpty(message="{campo.obrigatorio}")
 	private String cidade;
+
+	@NotEmpty(message="{campo.obrigatorio}")
 	private String uf;
+	
 	private String complemento;
 	
-	private Set<String> telefones;
-	private Set<String> emails;
+	@NotEmpty(message = "{campo.lista.email.obrigatorio}")
+	private Set<@Email String> emails;
+
+	@NotEmpty(message = "{campo.lista.telefone.obrigatorio}")
+	private List<@Valid TelefoneDTO> telefones;
 	
 	public ClienteNewDTO() {
 		
@@ -110,11 +132,14 @@ public class ClienteNewDTO implements Serializable{
 		this.complemento = complemento;
 	}
 
-	public Set<String> getTelefones() {
+	public List<Telefone> getTelefones() {
+		List<Telefone> telefones = this.telefones.stream().map(
+				telefone -> new Telefone(null,telefone.getNumeroSemMascara(), TipoTelefone.toEnum(telefone.getTipo()))
+				).collect(Collectors.toList());
 		return telefones;
 	}
 
-	public void setTelefones(Set<String> telefones) {
+	public void setTelefones(List<TelefoneDTO> telefones) {
 		this.telefones = telefones;
 	}
 

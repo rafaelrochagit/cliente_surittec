@@ -1,7 +1,9 @@
 package com.cliente.surittec.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -14,6 +16,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 @Entity
@@ -25,24 +28,25 @@ public class Cliente implements Serializable{
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 	
+	@Column(nullable = false)
 	private String nome;
+	
+	@Column(nullable = false)
 	private String cpf;
 	
 	@OneToOne(cascade = {CascadeType.ALL})
 	@JoinColumn(name = "endereco_id")
 	private Endereco endereco;
 	
-	@ElementCollection
-	@CollectionTable(name="TELEFONE")
-	@Column(name="telefone")
-	private Set<String> telefones = new HashSet<>();
+	@OneToMany(mappedBy="cliente", cascade = {CascadeType.ALL})
+	private List<Telefone> telefones = new ArrayList<Telefone>();
 	
 	@ElementCollection
 	@CollectionTable(name="EMAIL")
 	@Column(name="email")
 	private Set<String> emails = new HashSet<>();
 	
-	public Cliente(Integer id, String nome, String cpf, Endereco endereco, Set<String> telefones, Set<String> emails) {
+	public Cliente(Integer id, String nome, String cpf, Endereco endereco, List<Telefone> telefones, Set<String> emails) {
 		super();
 		this.id = id;
 		this.nome = nome;
@@ -88,13 +92,16 @@ public class Cliente implements Serializable{
 		this.endereco = endereco;
 	}
 
-	public Set<String> getTelefones() {
+	public List<Telefone> getTelefones() {
 		return telefones;
 	}
 
-	public void setTelefones(Set<String> telefones) {
-		telefones.stream().map(telefone -> telefone.replace("/[^0-9]+/g","")).collect(Collectors.toSet());
+	public void setTelefones(List<Telefone> telefones) {
 		this.telefones = telefones;
+	}
+	
+	public void setClienteToTelefones() {
+		telefones.forEach(telefone -> telefone.setCliente(this));
 	}
 
 	public Set<String> getEmails() {
