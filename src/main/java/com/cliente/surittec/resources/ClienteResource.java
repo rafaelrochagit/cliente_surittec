@@ -9,6 +9,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,8 +37,10 @@ public class ClienteResource {
 		return ResponseEntity.ok().body(cliente);
 	}
 	
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(method=RequestMethod.POST)
 	public ResponseEntity<Void> insert(@Valid @RequestBody ClienteNewDTO clienteDTO) {
+		
 		Cliente cliente = clienteService.fromDTO(clienteDTO);
 		cliente.setClienteToTelefones();
 		cliente = clienteService.insert(cliente);
@@ -46,6 +49,7 @@ public class ClienteResource {
 		return ResponseEntity.created(uri).build();
 	}
 	
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(value="/{id}", method=RequestMethod.PUT)
 	public ResponseEntity<Cliente> update(@Valid @RequestBody ClienteNewDTO clienteDTO, @PathVariable Integer id) {
 		Cliente cliente = clienteService.fromDTO(clienteDTO);
@@ -56,6 +60,7 @@ public class ClienteResource {
 		return ResponseEntity.ok().body(cliente);
 	}
 	
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(value="/{id}", method=RequestMethod.DELETE)
 	public ResponseEntity<Void> delete(@PathVariable Integer id) {
 		clienteService.delete(id);

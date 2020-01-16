@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -44,5 +45,11 @@ public class ResourceExceptionHandler {
 	public ResponseEntity<StandardError> objectNotFound(NullPointerException e, HttpServletRequest request) {
 		StandardError error = new StandardError(HttpStatus.INTERNAL_SERVER_ERROR.value(), "NullPointerException", System.currentTimeMillis());
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
+	}
+	
+	@ExceptionHandler(AccessDeniedException.class)
+	public ResponseEntity<StandardError> objectNotFound(AccessDeniedException e, HttpServletRequest request) {
+		StandardError error = new StandardError(HttpStatus.FORBIDDEN.value(), "Acesso negado", System.currentTimeMillis());
+		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(error);
 	}
 }
